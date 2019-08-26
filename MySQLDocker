@@ -1,0 +1,276 @@
+https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-getting-started.html
+
+sudo docker run -d -p 27017-27019:27017-27017 --name mongodb mongo:4.0.4
+sudo docker exec -it mongodb bash
+mongo 
+show dbs
+
+
+
+sudo docker run -d \
+    --name=roach_single \
+    --hostname=roach_single \
+    -p 26257:26257 -p 9393:8080\
+    -v "${PWD}/cockroach-data/roach_alone:/cockroach/cockroach-data"  \
+    cockroachdb/cockroach:v2.1.7 start --insecure
+
+
+
+
+docker pull mysql/mysql-server:5.7
+
+docker run --name=mysql1 -d store/oracle/mysql-enterprise-server:5.7
+
+docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root -d mysql/mysql-server:5.7
+
+docker run -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=root -d postgres
+
+sudo docker exec -it mysql mysql -u root -p
+
+sudo cat quartz.sql | sudo docker exec -i mysql /usr/bin/mysql -u root --password=root quartz
+
+
+
+sudo docker exec -it postgres postgres -u root -p
+
+psql -h 127.0.0.1 -U postgres
+
+Create new user with access outside of Localhost.
+
+mysql> create user 'admin'@'%' identified by 'admin';
+mysql> flush privileges;
+mysql> exit
+
+CREATE DATABASE alejoqm;
+USE user;
+
+
+CREATE TABLE login ( id smallint unsigned not null auto_increment, name varchar(20) not null, constraint pk_example primary key (id) );
+GRANT ALL PRIVILEGES ON alejoqm.login TO 'admin'@'%';
+
+
+
+GRANT ALL PRIVILEGES ON fraud_local.* TO 'admin'@'%' IDENTIFIED BY 'newpassword';
+GRANT ALL PRIVILEGES ON monitordb.* TO 'root'@'%' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON quartz.* TO 'root'@'%' IDENTIFIED BY 'root';
+
+
+
+docker exec -i -t <containerID> /bin/bashput("confirmed", getBooleanValueFromJson(jsonObject, "confirmed"));
+			put("escalated", "d");
+			"disabled"
+					"removed"
+
+
+
+Adding Translation capability:
+    go to oiq.properties in your home/product/conf
+    and add this
+    # Controls Translated snippets displaying on the UI
+    ui.showTranslatedSnippets=true
+    # Invoke machine translation on relevant snippets. Turned on in most production environments
+    oiq.cdp.translate.enabled=true
+    # Invoke post-event translation on processed snippets.
+    oiq.cdp.translate.postEvent.enabled=true
+    restart tomcat
+
+
+ps -ef | grep tomcat | grep -v grep | awk '{print $2}' | xargs kill
+
+rm -rf ../base/services/WEB-INF/lib/*.jar | rm -rf ../logs/*
+
+POST localhost:5000/v1/translate [application/json;charset=UTF-8; charset=UTF-8] {"text": ["HELLO WORLD"]}
+
+WARN  11:28:30.717 main [/] [oiq.enrich.translate.MicrosoftTranslatorClient] - HttpResponseException: Server Error - POST http://localhost:5000/v1/translate [application/json; charset=UTF-8] {"text":["Hola mundo","Buenos dias","Muchas gracias"]} (at com.exiger.oiq.crawl.client.DefaultCrawlClient$CallbackResponseHandler.handleResponse | DefaultCrawlClient.java:497) [9c73b9097cba1c95670d3993275e84be]
+
+
+mvn archetype:generate -DarchetypeGroupId=com.exiger.services -DarchetypeArtifactId=exiger-archetype-service -DarchetypeVersion=1.0.0-SNAPSHOT -DgroupId=com.exiger.services.test -DartifactId=test-service -DapplicationServerPort=8081 -DapplicationUriVersion=v1
+
+
+cd /etc/ssl/certs/java/cacerts
+chmod 777 cacerts
+keytool -importcert -storepass changeit  -noprompt -alias local-CA -keystore /app/cacerts -file /app/consul-ca.crt
+java -Djavax.net.ssl.trustStore=/app/cacerts  -jar /app/translation-service.jar --spring.cloud.bootstrap.location=file:/app/bootstrap.properties
+
+
+docker login <nexus-hostname>:<repository-port>
+
+
+oiq.farm.type=STATIC
+oiq.farm.live.uri=
+oiq.farm.live.key=
+oiq.farm.live.secret=
+oiq.farm.static.uri=
+oiq.farm.static.key=
+oiq.farm.static.secret=
+translation.service.url=http://127.0.0.1:5000/translate
+translation.service.engine=SYSTRAN
+oiq.client.id=lddiq
+
+
+
+
+https://repo.outsideiq.com/nexus/content/groups/public/com/oiq/knowledgebase/ddiq-knowledgebase/3/ddiq-knowledgebase-3.zip
+
+
+https://dev-vault.ddiq.com:8501/v1/kv/?keys
+
+
+
+
+
+
+keytool -importcert -alias local-CA -keystore /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts -file consul-ca.crt
+
+keytool -list -v -keystore /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts
+
+
+
+keytool -delete -alias <local-CA> -keystore /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts -storepass changeit . 
+
+<JAVA_HOME>/bin/keytool -list -v -alias <server_name> -keystore <JAVA_HOME>/jre/lib/security/cacerts
+
+
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"
+clear
+
+
+  ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/integration-service.jar","--spring.config.location=classpath:/bootstrap.properties,file:/app/translation-service-integration.properties"]
+ java -jar translation-service-integration-DEFAULT-SNAPSHOT.jar --spring.cloud.bootstrap.location=bootstrap.properties
+
+--------------------------------------------------------
+CONSUL 
+
+sudo docker run -d --name=consul1 -p 8500:8500 consul agent -dev -client=0.0.0.0 -bind=0.0.0.0
+
+
+spring.datasource.url -> jdbc:postgresql://localhost:26257/adjudicationdb
+spring.datasource.username -> root
+spring.jpa.properties.hibernate.dialect -> org.hibernate.dialect.PostgreSQLDialect
+spring.security.user.name
+spring.security.user.password
+spring.security.user.roles
+spring.jpa.hibernate.ddl-auto -> validate
+spring.flyway.locations=classpath:classpath:/db/migrations
+
+
+ ------------------ CONSUL EXPORT ------------------------
+ifconfig -a
+
+sudo docker run -it -v pwd:/consul-imex sozpinar/consul-imex export -u 172.18.0.1:8500 -p / my-data.json
+sudo docker run -it -v pwd:/consul-imex sozpinar/consul-imex cat my-data.json
+sudo docker cp `sudo docker ps -ql`:/consul-imex/my-data.json .
+
+
+sudo docker run -it -v `pwd`/consulProperties.json:/consulProperties.json sozpinar/consul-imex import -u 172.18.0.1:8500 -p / -v /consulProperties.json
+
+
+List services: http://127.0.0.1:8500/v1/agent/services
+/agent/service/:service_id
+
+
+-------------------------------
+log in as oiquser / dev4oiq
+
+
+
+KIBANA
+https://kibana.ddiq.com/app/kibana
+kubernetes.pod.name:"acct-v1-0-c6f9d64bf-565f6"
+kubernetes.namespace:"devplatsvc01" && kubernetes.labels.oiqclient:"intr-v1-0"
+kubernetes.namespace:"qaplatsvc01" && kubernetes.labels.oiqclient:"acct-v1-0"
+kubernetes.namespace:"devplatsvc01" && kubernetes.labels.oiqclient:"acct-v1-0"
+
+prdplatsvc01   qaplatsvc01
+
+
+-------------------------------------
+
+n order to enable the adjudications functionality in DDIQ, you must set to true the "Adjudication shown on UI" located in the Properties tab of the DDIQ admin page:
+
+https://localhost.outsideiq.com:8443/admin/
+credentials: oiqadmin / admin4oiq
+
+431220110940
+
+
+npm run lint:js
+npm run test
+npm run build
+
+sudo docker exec -it roach_single ./cockroach sql --insecure
+
+
+DELETE from attribute where 1 = 1;
+DELETE FROM adjudication where 1 = 1;
+DELETE FROM adjudication_state where 1 = 1;
+DELETE from hit where 1 = 1;
+
+
+?reWriteBatchedInserts=true&defaultRowFetchSize=1000
+
+
+          if (response.statusCodeValue === CONFLICT_STATUS) {
+            ModalTrackingService.openError('adjudicationError');
+          }
+
+ cat responseWithCaseComment.js | python -m json.tool > pretty.json
+
+
+log in as oiquser / dev4oiq
+
+
+VPN 
+/etc/openvpn/client$ sudo openvpn gateway-blanclabs-com.conf
+username = alejandroq
+password = 31tNVsXHz39416u
+
+{
+ "query": {
+   "bool": {
+     "must": [
+       {
+         "query_string": {
+           "query": "*De una manera simple*",
+           "analyze_wildcard": true
+         }
+       }
+     ]
+   }
+ }
+}
+
+
+
+INSERT INTO attribute VALUES(1, 10320, 'SOURCE', 'auto');
+
+UPDATE monitorhitsnapshot set contentId = oiqId where contentId is NULL;
+
+DELETE FROM assessment WHERE name = 'PROFILE_SCORE_ERROR';
+
+
+
+"spring.jpa.properties.hibernate.jdbc.batch_size":1000,
+"spring.jpa.properties.hibernate.generate_statistics": true
+
+
+
+1Password: 
+URL: https://my.1password.com/signin
+Email: alejandroq@Blanclabs.com
+Secret Key: A3-ANJ95B-V225AQ-2QVYZ-RXMJ8-BD458-EWHDR
+Master Key: 3302268480Bun#
+
+
+
+
+Okta:
+
+Token eyJraWQiOiJXa09nYlRWUERhN1huaXNUOUlKUWlZM005SnRPdGctZ2h2MkUwTWlTRUxVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjdhcHpiYmdFXzJ0alhHVWl6RWUyWGFuaFN1Z1BBUDZlV3oyd0pzX2s4S1Euc0YyckhUN2U0SnA0WkJzUld0RS9WSjUvSTZzNEZJZ0hrQ2FoNWxVUDBJWT0iLCJpc3MiOiJodHRwczovL2V4aWdlcnRydXN0Lm9rdGFwcmV2aWV3LmNvbS9vYXV0aDIvYXVza3Awc2duNERERElZMXQwaDciLCJhdWQiOiJkZGlxLWRldiIsImlhdCI6MTU2NDAwMDI0NiwiZXhwIjoxNTY0MDAzODQ2LCJjaWQiOiIwb2Frb3h5YTVyWUszT0toNzBoNyIsInVpZCI6IjAwdWx2emNoam9SbFZWa2FDMGg3Iiwic2NwIjpbIm9mZmxpbmVfYWNjZXNzIiwib3BlbmlkIl0sInN1YiI6ImFsZWphbmRyb3FAYmxhbmNsYWJzLmNvbSIsInJvbGVzIjpbIkRESVEtQURNSU4iLCJERElRLVVTRVIiXSwicmVnaW9uIjp7InN0cmVldF9hZGRyZXNzIjpudWxsLCJjb3VudHJ5IjpudWxsLCJ3ZWJzaXRlIjpudWxsLCJ6b25laW5mbyI6IkFtZXJpY2EvTG9zX0FuZ2VsZXMiLCJiaXJ0aGRhdGUiOm51bGwsImdlbmRlciI6bnVsbCwiZm9ybWF0dGVkIjpudWxsLCJwcm9maWxlIjpudWxsLCJsb2NhbGl0eSI6bnVsbCwidXNlck5hbWUiOiJhbGVqYW5kcm9xQGJsYW5jbGFicy5jb20iLCJnaXZlbl9uYW1lIjoiTHVpcyIsIm1pZGRsZV9uYW1lIjpudWxsLCJsb2NhbGUiOiJlbi1VUyIsInBpY3R1cmUiOm51bGwsIm5hbWUiOiJMdWlzIFF1aW50ZXJvIiwibmlja25hbWUiOm51bGwsInBob25lX251bWJlciI6bnVsbCwicmVnaW9uIjpudWxsLCJwb3N0YWxfY29kZSI6bnVsbCwiZmFtaWx5X25hbWUiOiJRdWludGVybyIsImVtYWlsIjoiYWxlamFuZHJvcUBibGFuY2xhYnMuY29tIiwic3RhdHVzIjoiQUNUSVZFIn19.CN45TuBJ_-xEanQo-pRNWAo6W2GuTidl2gljb0A5Q-dCWM8R751YzCdI7EnP0MT0wn0Mq9tP1Y3hogcbnc-_zJtM__LOmcpt8gc6kmMr8q5TFzDOigdFHHjExqrEvgOOuHJWGcQWj7nmEIJ25zxvdL8F8Lk23Ysk-m4Efr0IU-DggmTGXA72hIyaELpT66fHfmV4wO8uupr77GKQKli2ZxHpblNxkEFrJvNdRjEuUeUkc0iEFLGNcpHOdrc0Byaud8IQCG8YIYdb3T3aOiA6Ui9DfDH1ciwhV6M3Y6fPOmKnsXyYRyXrrw7c8kZOLxf8OtareEZoZTdgbvBcabiJgg
+
+Refresh_token: 
+rtZgNx9KhOmyJzwgx9en8qUba3tcEE1bTJBe5GFZbWw
+
+ID TOKEN: 
+eyJraWQiOiJXa09nYlRWUERhN1huaXNUOUlKUWlZM005SnRPdGctZ2h2MkUwTWlTRUxVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlZjVXh4TVRtQ0VPLUQ3cDVoRWUtRjh2bmcwdEh5YmE0QkxyejlhYmdlbmsuVHYxOGhDZWd6T1o0TnBtNEFhWTJDOU9yUGh5Mzdzd0dDMldCckdPemdCZz0iLCJpc3MiOiJodHRwczovL2V4aWdlcnRydXN0Lm9rdGFwcmV2aWV3LmNvbS9vYXV0aDIvYXVza3Awc2duNERERElZMXQwaDciLCJhdWQiOiJkZGlxLWRldiIsImlhdCI6MTU2NDA4ODI5NywiZXhwIjoxNTY0MDkxODk3LCJjaWQiOiIwb2Frb3h5YTVyWUszT0toNzBoNyIsInVpZCI6IjAwdWx2emNoam9SbFZWa2FDMGg3Iiwic2NwIjpbIm9mZmxpbmVfYWNjZXNzIiwib3BlbmlkIl0sInN1YiI6ImFsZWphbmRyb3FAYmxhbmNsYWJzLmNvbSIsInJvbGVzIjpbIkRESVEtQURNSU4iLCJERElRLVVTRVIiXSwicmVnaW9uIjp7InN0cmVldF9hZGRyZXNzIjpudWxsLCJjb3VudHJ5IjpudWxsLCJ3ZWJzaXRlIjpudWxsLCJ6b25laW5mbyI6IkFtZXJpY2EvTG9zX0FuZ2VsZXMiLCJiaXJ0aGRhdGUiOm51bGwsImdlbmRlciI6bnVsbCwiZm9ybWF0dGVkIjpudWxsLCJwcm9maWxlIjpudWxsLCJsb2NhbGl0eSI6bnVsbCwidXNlck5hbWUiOiJhbGVqYW5kcm9xQGJsYW5jbGFicy5jb20iLCJnaXZlbl9uYW1lIjoiTHVpcyIsIm1pZGRsZV9uYW1lIjpudWxsLCJsb2NhbGUiOiJlbi1VUyIsInBpY3R1cmUiOm51bGwsIm5hbWUiOiJMdWlzIFF1aW50ZXJvIiwibmlja25hbWUiOm51bGwsInBob25lX251bWJlciI6bnVsbCwicmVnaW9uIjpudWxsLCJwb3N0YWxfY29kZSI6bnVsbCwiZmFtaWx5X25hbWUiOiJRdWludGVybyIsImVtYWlsIjoiYWxlamFuZHJvcUBibGFuY2xhYnMuY29tIiwic3RhdHVzIjoiQUNUSVZFIn19.pyuQ8z455MYSQXsUJmjAYwnOBsaSVHiU3BRVpmTg7Cxw4dw5VRtV0Pz1u_aHJ_hSd5Qvry_88jPK4wejPK-U-kEeG5G__hQcs3lqtru6PGKW75JtNvCP-IXbFknufDZWa55BwGvdjm_C8czWPyWM_n_2jP_zGZytwcO6QRcRQ4DgPVzumcNd4kmcPbNdMTaWoWITb1iw-tCoSr8Ps3d0bTldZD1n91a4AzwISzwD1rt0O-j1-h8WC0oZY1Vl3mb3EiNFaFJU3HXzN0SUX3tNaX8d0Ew1DLUSVRbHnfF5wtJed23AtBO7Ez8_7HmUxls10JTxGgbukudlqX2JyUF-GQ
+

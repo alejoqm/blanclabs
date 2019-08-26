@@ -1,0 +1,35 @@
+{
+    "config": {
+        "adjudication-service": {
+            "spring.datasource.password": "",
+            "spring.datasource.url": "jdbc:postgresql:\/\/localhost:26257\/adjudication",
+            "spring.datasource.username": "root",
+            "spring.jpa.hibernate.ddl-auto": "validate",
+            "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.PostgreSQLDialect"
+        },
+        "application": {
+            "actuator.health.url": "\/actuator\/health",
+            "feign.client.connectTimeout": "300000",
+            "feign.client.readTimeout": "300000",
+            "management.endpoints.web.exposure.include": "health, metrics, info",
+            "management.metrics.export.influx.connect-timeout": "5s",
+            "management.metrics.export.influx.db": "platform_services_dev",
+            "management.metrics.export.influx.password": "metricsformiles",
+            "management.metrics.export.influx.uri": "https:\/\/metricsdb.outsideiq.com:8087",
+            "management.metrics.export.influx.user-name": "oiq",
+            "management.metrics.web.server.auto-time-requests": "false",
+            "spring.cloud.config.override-none": "true",
+            "spring.cloud.config.override-system-properties": "false",
+            "spring.security.adjudicationService.user.name": "default",
+            "spring.security.adjudicationService.user.password": "default",
+            "spring.security.adjudicationService.user.roles": "ROLES",
+            "spring.liquibase.change-log":"classpath:db\/migrations\/liquibase-changeLog.xml",
+            "spring.jpa.properties.hibernate.jdbc.batch_size": "40",
+            "spring.jpa.properties.hibernate.order_inserts": "true",
+            "spring.jpa.properties.hibernate.order_updates": "true",
+            "spring.jpa.properties.hibernate.show_sql": "true",
+            "spring.jpa.properties.hibernate.format_sql": "true",
+            "spring.jpa.properties.hibernate.generate_statistics": "true"
+        }
+    }
+}

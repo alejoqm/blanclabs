@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet id="1" author="exiger" dbms="postgresql" failOnError="true" >
+
+        <createTable tableName="adjudication" >
+            <column name="id" type="SERIAL" >
+                <constraints primaryKey="true" />
+            </column>
+            <column name="hit_id" type="int8">
+                <constraints nullable="false" />
+            </column>
+            <column name="actor_id" type="varchar(20)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="actor_name" type="varchar(20)" />
+            <column name="action_id" type="int8" >
+                <constraints nullable="false" />
+            </column>
+            <column name="state" type="varchar(20)"/>
+            <column name="create_at" type="timestamp with time zone">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="hit" >
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+             </column>
+            <column name="content_id" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="client_id" type="varchar(50)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="domain_id" type="int8" >
+                <constraints nullable="false" />
+            </column>
+            <column name="case_id" type="varchar(50)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="content_type" type="varchar(50)" >
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="attribute" >
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="adjudication_id" type="int8" >
+                <constraints nullable="false" />
+            </column>
+            <column name="key" type="varchar(50)" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(2000)" >
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="adjudication_state" >
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="hit_id" type="int8" >
+                <constraints nullable="false" />
+            </column>
+            <column name="action_id" type="int8" >
+                <constraints nullable="false" />
+            </column>
+            <column name="state" type="bool" />
+            <column name="version" type="int4" >
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="domain" >
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar" />
+        </createTable>
+
+        <createTable tableName="domain_actions" >
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="domain_id" type="int8">
+                <constraints nullable="false" />
+            </column>
+            <column name="action" type="varchar(50)"/>
+        </createTable>
+
+        <createSequence sequenceName="adjudication_id_seq" incrementBy="1" startValue="1"   />
+        <createSequence sequenceName="hit_id_seq" incrementBy="1" startValue="1"   />
+        <createSequence sequenceName="attribute_id_seq" incrementBy="1" startValue="1"   />
+        <createSequence sequenceName="adjudication_state_id_seq" incrementBy="1" startValue="1"   />
+        <createSequence sequenceName="domain_id_seq" incrementBy="1" startValue="1"   />
+        <createSequence sequenceName="domain_actions_id_seq" incrementBy="1" startValue="1"   />
+
+        <createIndex  tableName="adjudication" indexName="adjudication_hit_id_idx">
+            <column name="hit_id"/>
+        </createIndex>
+
+        <createIndex  tableName="adjudication" indexName="adjudication_action_id_idx">
+            <column name="action_id"/>
+        </createIndex>
+
+        <createIndex  tableName="adjudication_state" indexName="adjudication_state_action_id_idx">
+            <column name="action_id"/>
+        </createIndex>
+
+        <createIndex  tableName="adjudication_state" indexName="adjudication_state_hit_id_idx">
+            <column name="hit_id"/>
+        </createIndex>
+
+        <createIndex  tableName="hit" indexName="hit_domain_id_idx">
+            <column name="domain_id"></column>
+        </createIndex>
+
+        <createIndex  tableName="attribute" indexName="attribute_adjudication_id_idx">
+            <column name="adjudication_id"></column>
+        </createIndex>
+
+        <createIndex  tableName="domain_actions" indexName="domain_actions_domain_id_idx">
+            <column name="domain_id"></column>
+        </createIndex>
+
+
+        <addUniqueConstraint  tableName="hit" columnNames="content_id, client_id, content_type"
+                             constraintName="unique_hit_by_content_id_client_id_content_type_constraint"/>
+
+        <addForeignKeyConstraint  baseTableName="adjudication" baseColumnNames="hit_id"
+                                 constraintName="fk_hit_adjudication"
+                                 referencedTableName="hit" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="adjudication" baseColumnNames="action_id"
+                                 constraintName="fk_domain_actions_adjudication"
+                                referencedTableName="domain_actions" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="adjudication_state" baseColumnNames="action_id"
+                                 constraintName="fk_action_adjudication_state"
+                                  referencedTableName="domain_actions" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="hit" baseColumnNames="domain_id" constraintName="fk_domain_hit"
+                                  referencedTableName="domain" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="attribute" baseColumnNames="adjudication_id"
+                                 constraintName="fk_adjudication_attribute"
+                                 referencedTableName="adjudication" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="adjudication_state" baseColumnNames="hit_id"
+                                 constraintName="fk_hit_adjudication_state"
+                                  referencedTableName="hit" referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint  baseTableName="domain_actions" baseColumnNames="domain_id"
+                                 constraintName="fk_domain_domain_actions"  referencedTableName="domain"
+                                 referencedColumnNames="id"/>
+
+        <insert tableName="domain" >
+            <column name="name" value="DDIQ" />
+        </insert>
+
+        <insert tableName="domain" >
+            <column name="name" value="Screening" />
+        </insert>
+
+        <insert tableName="domain" >
+            <column name="name" value="Insight3pm" />
+        </insert>
+
+        <insert tableName="domain" >
+            <column name="name" value="MONITORING" />
+        </insert>
+
+        <sql>
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'CONFIRM' FROM domain WHERE name = 'DDIQ';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'REMOVE' FROM domain WHERE name = 'DDIQ';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'ESCALATE' FROM domain WHERE name = 'DDIQ';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'COMMENT' FROM domain WHERE name = 'DDIQ';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'AUTO_ADJUDICATE' FROM domain WHERE name = 'DDIQ';
+
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'CONFIRM' FROM domain WHERE name = 'MONITORING';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'REMOVE' FROM domain WHERE name = 'MONITORING';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'ESCALATE' FROM domain WHERE name = 'MONITORING';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'COMMENT' FROM domain WHERE name = 'MONITORING';
+            INSERT INTO domain_actions(domain_id, action) SELECT id, 'AUTO_ADJUDICATE' FROM domain WHERE name = 'MONITORING';
+        </sql>
+    </changeSet>
+
+    <changeSet id="BL-225-attribute-value-type" author="cfuentes" dbms="postgresql">
+        <comment>Updating value type in attribute table using raw sql since modifyColumn element didn't work</comment>
+        <sql>
+            ALTER TABLE attribute ALTER COLUMN value TYPE varchar
+        </sql>
+    </changeSet>
+
+    <changeSet id="BL-350-add-domain-in-unique-constraint-hit" author="dreyes" dbms="postgresql" failOnError="true">
+        <comment>BL-350 - Add domain_id into constraint for hit table</comment>
+        <sql>
+            drop index unique_hit_by_content_id_client_id_content_type_constraint cascade;
+        </sql>
+        <addUniqueConstraint tableName="hit" columnNames="content_id, client_id, content_type, domain_id"
+                             constraintName="unique_hit_by_content_id_client_id_content_type_domain_id_constraint"/>
+    </changeSet>
+
+
+</databaseChangeLog>

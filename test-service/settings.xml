@@ -1,0 +1,50 @@
+<settings>
+	<pluginGroups>
+		<pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+	</pluginGroups>
+
+	<servers>
+		<!-- these id should match the id of the repo server in pom.xml -->
+		<server>
+			<id>exiger-nexus-releases</id>
+			<username>deployment</username>
+			<password>01q_dev12</password>
+		</server>
+		<server>
+			<id>oiq-nexus-snapshots</id>
+			<username>deployment</username>
+			<password>01q_dev12</password>
+		</server>
+		<server>
+			<id>oiq-nexus-3rdparty</id>
+			<username>deployment</username>
+			<password>01q_dev12</password>
+		</server>
+		<server>
+			<id>oiq-central-repo</id>
+			<username>maven</username>
+			<password>01qM2build</password>
+		</server>
+		<server>
+			<id>nexus-docker</id>
+			<username>tordevkubecluster01</username>
+			<password>PT2tO4XVfaYyTW4gFwAY</password>
+		</server>
+		<server>
+			<id>bitbucket.org</id>
+			<username>git</username>
+			<privateKey>${user.home}/.ssh/id_dsa</privateKey>
+			<filePermissions>664</filePermissions>
+			<directoryPermissions>775</directoryPermissions>
+			<configuration></configuration>
+		</server>
+	</servers>
+
+	<mirrors>
+		<mirror>
+			<id>oiq-central-repo</id>
+			<url>https://nexus.ddiq.com/service/rest/repository/browse/maven-public</url>
+			<mirrorOf>*</mirrorOf>
+		</mirror>
+	</mirrors>
+</settings> 
